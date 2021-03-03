@@ -11,6 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-18.04
     if: ${{ github.event.repository.owner.id == github.event.sender.id && github.repository == 'DoveBoy/jd_scripts-gitee' }}
+    timeout-minutes: 2
 
     steps:
     - name: Init Build Dependencies
@@ -18,7 +19,9 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         sudo -E rm -rf /etc/apt/sources.list.d
-        sudo -E apt-get update -y && apt-get install -y build-essential git git-core curl wget && apt-get clean -y
+        sudo -E apt-get update -y
+        sudo -E apt-get install -y build-essential git git-core curl wget
+        sudo -E apt-get clean -y
         git config --global user.name 'GitHub Actions' && git config --global user.email 'noreply@github.com'
 
     - name: Prepare
@@ -39,9 +42,10 @@ jobs:
         github_token: ${{ secrets.PAT }}
         branch: master
 
-    # - name: Delete workflow runs
+    # - name: Delete Workflow Runs
       # uses: Mattraks/delete-workflow-runs@main
       # with:
         # token: ${{ github.token }}
+        # repository: ${{ github.repository }}
         # retain_days: 1
-        # keep_minimum_runs: 3
+        # keep_minimum_runs: 0
